@@ -399,7 +399,12 @@ class Client:
             sig = sign_hmac(self.client_secret, path)
             return path + "&signature=" + sig
 
-        if self.key:
+        if self.key and self.client_secret:
+            params.append(("key", self.key))
+            path = path + "?" + urlencode_params(params)
+            sig = sign_hmac(self.client_secret, path)
+            return path + "&signature=" + sig
+        elif self.key:
             params.append(("key", self.key))
             return path + "?" + urlencode_params(params)
 
